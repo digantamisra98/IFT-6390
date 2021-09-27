@@ -10,20 +10,30 @@ def draw_rand_label(x, label_list):
     return np.random.choice(label_list)
 #############################################
 
-
 class Q1:
 
     def feature_means(self, iris):
-        pass
+        q = iris.mean(axis = 0).T[:-1]
+        return q.T
 
     def covariance_matrix(self, iris):
-        pass
+        return np.cov(iris[:,:-1], rowvar = False)
 
     def feature_means_class_1(self, iris):
-        pass
+        feat = []
+        for i in iris:
+            if i.T[-1] == 1:
+                feat.append(i[:][:-1])
+        feat = np.array(feat)
+        return feat.mean(axis = 0)
 
     def covariance_matrix_class_1(self, iris):
-        pass
+        feat = []
+        for i in iris:
+            if i.T[-1] == 1:
+                feat.append(i[:][:-1])
+        feat = np.array(feat)
+        return np.cov(feat, rowvar = False)
 
 
 class HardParzen:
@@ -51,7 +61,15 @@ class SoftRBFParzen:
 
 
 def split_dataset(iris):
-    pass
+    train, val, test = [],[],[]
+    for i in range(iris.shape[0]):
+        if i % 5 == 0 or i % 5 == 1 or i % 5 == 2:
+            train.append(iris[i])
+        elif i % 5 == 3:
+            val.append(iris[i])
+        else:
+            test.append(iris[i])
+    return (np.array(train), np.array(val), np.array(test))
 
 
 class ErrorRate:
@@ -73,4 +91,4 @@ def get_test_errors(iris):
 
 
 def random_projections(X, A):
-    pass
+    return np.dot(X,A)/np.sqrt(2)
